@@ -152,7 +152,7 @@ void G2D::DrawPolygon(vector<V2>& PointList, Color c, bool fill)
 	else glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glDisable(GL_TEXTURE_2D);
 
-	glLineWidth(1);
+	glLineWidth(4);
 	glColor4d(c.R, c.G, c.B, c.A);
 
 	glBegin(GL_POLYGON);

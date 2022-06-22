@@ -46,14 +46,7 @@ struct _plateau {
         "[66666666]"
         "[66666666]"
         "[66666666]";
-    string texturePossible = "[        ]"
-        "[   GG   ]"
-        "[  G  G  ]"
-        "[ G GG G ]"
-        "[ G GG G ]"
-        "[  G  G  ]"
-        "[   GG   ]"
-        "[        ]";
+
 
     string positionPiece = "22222222"
         "22222222"
@@ -1828,7 +1821,7 @@ vector<deplacement> DePossible(int joueur)
 int point(int joueur)
 {
     int point = 0;
-
+    int nbPiece = 0;
     for (int i = 0; i < 32; i++)
     {
 
@@ -1851,7 +1844,10 @@ int point(int joueur)
                 {
                     point += 2;
                 }
-
+                if (P.couleur != joueur)
+                {
+                    nbPiece += 1;
+                }
             }
 
         }
@@ -1873,7 +1869,10 @@ int point(int joueur)
                 {
                     point -= 2;
                 }
-
+                if (P.couleur != joueur)
+                {
+                    nbPiece += 1;
+                }
             }
         }
     }
@@ -1882,16 +1881,26 @@ int point(int joueur)
         point = -point;
         vector<deplacement> M = DePossible(1);
         point += M.size() * (1 / 3);
+
+        if (nbPiece > 12)
+        {
+            vector<deplacement> e = DePossible(2);
+            point += 10 / (1 + e.size());
+        }
     }
     else
     {
         vector<deplacement> M = DePossible(2);
         point += M.size() * (1 / 3);
-
+        if (nbPiece > 12)
+        {
+            vector<deplacement> e = DePossible(1);
+            point += 10 / (1 + e.size());
+        }
     }
     int score = point;
     return score;
-}
+}//IA
 //IA
 void Timer(_Piece* piece, int multiplier)
 {
@@ -2183,7 +2192,7 @@ void affichage_ecran_options() {
     BG.Size = BG.Size * BG.Zoom;
     G2D::DrawRectWithTexture(BG.IdTex, V2(-400, 0), BG.Size);
 
-    G2D::DrawStringFontMono(V2(100, 500), "Choisissez votre difficulte !", 23, 3,
+    G2D::DrawStringFontMono(V2(100, 500), "Choisissez votre mode de jeu !", 23, 3,
         Color::White);
     G2D::DrawStringFontMono(V2(50, 300),
         "Appuyez sur A pour jouer les blancs contre l'IA", 16, 3,
@@ -2209,9 +2218,9 @@ void affichage_init_partie() {
     G2D::DrawRectWithTexture(roi.IdTex, V2(250, 280), roi.Size);
 
 
-    G2D::DrawStringFontMono(V2(10, 150), "CONSEIL : N'hesitez pas à utiliser le rocque pour mettre ", 16, 3,
+    G2D::DrawStringFontMono(V2(10, 150), "CONSEIL : Pensez à developper vos pieces ", 16, 3,
         Color::White);
-    G2D::DrawStringFontMono(V2(60, 130), "a l'abri votre roi et developper une de vos pieces", 16, 3, Color::White);
+    G2D::DrawStringFontMono(V2(60, 130), "afin de pouvoir gagner", 16, 3, Color::White);
 
     G2D::DrawStringFontMono(V2(220, 80), "Appuyez sur ENTER", 16, 3, Color::White);
 
@@ -2247,10 +2256,16 @@ void affichage_ecran_jeu() {
     }
     if (G.pieceEncours != -1) {
         for (V2 position : G.zonesJouables) {
-            int xx = position.x * G.Lpix - 12;
+            int xx = position.x * G.Lpix ;
             int yy = position.y * G.Lpix;
-            G2D::DrawRectWithTexture(G.IdTexPossible, V2(xx, yy),
-                G.Size);
+            if (G.Plateau.getPositionPiece(position) != 0)
+            {
+                G2D::DrawCircle(V2(xx + G.Lpix / 2, yy + G.Lpix / 2), G.Lpix / 2, Color::Black, false);
+            }
+            else
+            {
+                G2D::DrawCircle(V2(xx + G.Lpix / 2 , yy + G.Lpix / 2), G.Lpix / 4, Color::Black, true);
+            }
         }
     }
     if (G2D::IsMouseLeftButtonPressed())
@@ -2572,8 +2587,6 @@ void AssetsInit() {
         G2D::InitTextureFromString(G.Size, G.Plateau.textureMur);
     G.IdTexSol =
         G2D::InitTextureFromString(G.Size, G.Plateau.textureSol);
-    G.IdTexPossible =
-        G2D::InitTextureFromString(G.Size, G.Plateau.texturePossible);
     G.Size =
         G.Size * 10; // on peut zoomer la taille du sprite
 }
