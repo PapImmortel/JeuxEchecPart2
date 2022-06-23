@@ -2276,8 +2276,15 @@ void affichage_ecran_jeu() {
     }
     if (G.TimerEnd > 0 && G.TimerEnd < 80)
     {
-        G2D::DrawStringFontMono(V2(50, 300), "CHECKMATE!!", 80, 20,
-            Color::Black);
+        if (finDePartie()!=0)
+        {
+            G2D::DrawStringFontMono(V2(50, 300), "CHECKMATE!!", 80, 20,
+                Color::Black);
+        }
+        else {
+            G2D::DrawStringFontMono(V2(50, 300), "PAT!!!", 80, 20,
+                Color::Black);
+        }
     }
 }
 //end
@@ -2321,8 +2328,9 @@ void affichage_ecran_pat() {
     Tie.Size = Tie.Size * Tie.Zoom;
     G2D::DrawRectWithTexture(Tie.IdTex, V2(160, 300), Tie.Size);
 
-    G2D::DrawStringFontMono(V2(100, 100), "Appuyez sur ENTER pour continuer.", 20, 3, Color::Black);
-
+    G2D::DrawStringFontMono(V2(50, 200),
+        "Appuyez sur ENTER pour faire une autre partie.", 16,
+        3, Color::White);
 }
 //end
 void render() {
@@ -2407,10 +2415,10 @@ int gestion_ecran_jeu() {
         G.setTimerEnd(G.TimerEnd + 1);
         return 3;
     }
-    if (G.getJoueur()==G.joueurIa)
+    if (G.getJoueur()==G.joueurIa && G.TimerEnd < 80)
     {
        actualisePlateau();
-       IaN(G.joueurIa, -2000, 2000, false, false, 3);
+       IaN(G.joueurIa, -2000, 2000, false, false, 4);
        G.setJoueur();
     }
     else
