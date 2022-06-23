@@ -80,6 +80,7 @@ struct _Piece {
     bool estVivant;
     int typePiece;
     V2 Size;
+    V2 SizeMax;
     float Zoom;
     int IdTex;
     string Texture;
@@ -2249,8 +2250,6 @@ void affichage_ecran_jeu() {
     for (int i = 0; i<32;i++) {
         if (G.pieces[i].getEstVivant() && i!=G.pieceEncours) 
         {
-            G.pieces[i].IdTex = G2D::InitTextureFromString(G.pieces[i].Size, G.pieces[i].Texture);
-            G.pieces[i].Size = G.pieces[i].Size * G.pieces[i].Zoom;
             G2D::DrawRectWithTexture(G.pieces[i].IdTex, V2(G.pieces[i].getCoord().x * G.Lpix + 8, G.pieces[i].getCoord().y * G.Lpix + 2), G.pieces[i].Size);
         }
     }
@@ -2272,9 +2271,7 @@ void affichage_ecran_jeu() {
     {
         if (G.mouseIsActive)
         {
-            G.pieces[G.pieceEncours].IdTex = G2D::InitTextureFromString(G.pieces[G.pieceEncours].Size, G.pieces[G.pieceEncours].Texture);
-            G.pieces[G.pieceEncours].Size = G.pieces[G.pieceEncours].Size * G.pieces[G.pieceEncours].Zoom * 1.5;
-            G2D::DrawRectWithTexture(G.pieces[G.pieceEncours].IdTex, V2((G.xMouse - G.pieces[G.pieceEncours].Size.x / 2), G.yMouse - G.pieces[G.pieceEncours].Size.y / 2), G.pieces[G.pieceEncours].Size);
+            G2D::DrawRectWithTexture(G.pieces[G.pieceEncours].IdTex, V2((G.xMouse - G.pieces[G.pieceEncours].SizeMax.x / 2), G.yMouse - G.pieces[G.pieceEncours].SizeMax.y / 2), G.pieces[G.pieceEncours].SizeMax);
         }
     }
     if (G.TimerEnd > 0 && G.TimerEnd < 80)
@@ -2389,6 +2386,11 @@ int InitPartie() {
         G.Plateau.resetPlateau();
         G.joueur = 1;
         G.setTimerEnd(0);
+        for (int i = 0; i < 32; i++) {
+            G.pieces[i].IdTex = G2D::InitTextureFromString(G.pieces[i].Size, G.pieces[i].Texture);
+            G.pieces[i].Size = G.pieces[i].Size * G.pieces[i].Zoom;
+            G.pieces[i].SizeMax = G.pieces[i].Size *1.5;
+        }
         //réinitialise la game
         return 3;
     }
@@ -2589,6 +2591,7 @@ void AssetsInit() {
         G2D::InitTextureFromString(G.Size, G.Plateau.textureSol);
     G.Size =
         G.Size * 10; // on peut zoomer la taille du sprite
+    
 }
 int main(int argc, char* argv[]) {
     G2D::InitWindow(argc, argv, V2(G.Lpix * 8, G.Lpix * 8), V2(200, 200),
