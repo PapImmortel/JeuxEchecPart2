@@ -2385,7 +2385,7 @@ int gestion_ecran_jeu() {
     if (G.getJoueur()==G.joueurIa && G.TimerEnd < 80)
     {
        actualisePlateau();
-       IaN(G.joueurIa, -2000, 2000, false, false, 4);
+       IaN(G.joueurIa, -2000, 2000, false, false, 3);
        G.setJoueur();
     }
     else
