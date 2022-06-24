@@ -1161,7 +1161,6 @@ struct GameData {
     void setTimerEnd(int _TimerEnd) { TimerEnd = _TimerEnd; }
     int IdTexMur;
     int IdTexSol;
-    int IdTexPossible;
     deplacement test = deplacement(V2(), V2());
     vector<V2> zonesJouables = {};
     
@@ -1430,12 +1429,10 @@ bool DeplacementPiece(_Piece Piece, V2 pNewPos){
                 return true;
             }
         }
-        else if (Piece.getNoMove())//TEst pour le roque
+        else if (Piece.getNoMove())//Test pour le roque
         {
             if ((vCoord.y == pNewPos.y && vCoord.x + 2 == pNewPos.x)) {
                 if (Piece.getCouleur() == 1 && G.pieces[25].getNoMove() && G.pieces[25].getEstVivant()) {
-                    //cout << "maybe" << endl;
-                    //cout<< "dernier" << DeplacementPiece(Piece, V2(6, 0));
 
                     if (DeplacementPiece(G.pieces[25], V2(5, 0)) && DeplacementPiece(Piece, V2(5, 0)))
                     {
@@ -1456,8 +1453,6 @@ bool DeplacementPiece(_Piece Piece, V2 pNewPos){
                     }
                 }
                 else if (Piece.getCouleur() == 2 && G.pieces[9].getNoMove() && G.pieces[9].getEstVivant()) {
-                    //cout << "maybe" << endl;
-                    //cout<< "dernier" << DeplacementPiece(Piece, V2(6, 0));
 
                     if (DeplacementPiece(G.pieces[9], V2(5, 7)) && DeplacementPiece(Piece, V2(5, 7)))
                     {
@@ -1501,8 +1496,6 @@ bool DeplacementPiece(_Piece Piece, V2 pNewPos){
                     }
                 }
                 else if (Piece.getCouleur() == 2 && G.pieces[8].getNoMove() && G.pieces[8].getEstVivant()) {
-                    //cout << "maybe" << endl;
-                    //cout<< "dernier" << DeplacementPiece(Piece, V2(6, 0));
 
                     if (DeplacementPiece(G.pieces[8], V2(3, 7)) && DeplacementPiece(Piece, V2(3, 7)))
                     {
@@ -1768,7 +1761,6 @@ vector<deplacement> DePossible(int joueur)
                         {
                             if (NoSuicideMove(vPiece, V2(k, j))) {
                                 DP.push_back(deplacement(vPiece.pos, V2(k, j), i));
-                                // std::cout << "(" << vPiece.pos.x << vPiece.pos.y << ";" << k << j << ")" << endl;
                             }
                         }
                     }
@@ -1776,7 +1768,6 @@ vector<deplacement> DePossible(int joueur)
                     {
                         if (NoSuicideMove(vPiece, V2(k, j))) {
                             DP.push_back(deplacement(vPiece.pos, V2(k, j), i));
-                            //std::cout << "(" << vPiece.pos.x << vPiece.pos.y << ";" << k << j << ")" << endl;
                         }
                     }
 
@@ -1800,7 +1791,6 @@ vector<deplacement> DePossible(int joueur)
                         {
                             if (NoSuicideMove(vPiece, V2(k, j))) {
                                 DP.push_back(deplacement(vPiece.pos, V2(k, j), i));
-                                //std::cout << "(" << vPiece.pos.x << vPiece.pos.y << ";" << k << j << ")" << endl;
                                 int p = 0;
                             }
                         }
@@ -1809,7 +1799,6 @@ vector<deplacement> DePossible(int joueur)
                     {
                         if (NoSuicideMove(vPiece, V2(k, j))) {
                             DP.push_back(deplacement(vPiece.pos, V2(k, j), i));
-                            //std::cout << "(" << vPiece.pos.x << vPiece.pos.y << ";" << k << j << ")" << endl;
                         }
                     }
                 }
@@ -1967,10 +1956,6 @@ void changeBack(deplacement D)
                 Timer(&piece, -1);
             }
         }
-        /* if (!G.pieces[17].getEstVivant())
-         {
-             cout << G.Plateau.getPlateau() << endl;
-         }*/
     }
 }
 void fin()
@@ -1999,7 +1984,6 @@ void actualisePlateau()
     {
         for (int y = 0; y < 8; y++)
         {
-            //cout << G.Plateau.getPositionPiece(V2(x, y)) << endl;
             if (G.Plateau.getPositionPiece(V2(x, y)) == 3)
             {
                 G.Plateau.setPositionPiece(x, y, "1");
@@ -2015,7 +1999,6 @@ void actualisePlateau()
         }
 
     }
-    //cout << G.Plateau.getPlateau() << endl;
 }
 int IaN(int joueur, int alpha, int beta, bool EMin, bool fils, int depth)
 {
@@ -2089,17 +2072,9 @@ int IaN(int joueur, int alpha, int beta, bool EMin, bool fils, int depth)
             }
             int m = v;
             int t = IaN(joueur, alpha, beta, true, true, depth - 1);
-            //cout << t<<endl;
 
             v = max(v, t);
-            /*if (!fils)
-            {
-                cout << DP[i].Fin.x << DP[i].Fin.y << endl;
-                cout << "score: " << t << endl;
-                cout << "v=: " << v << endl;
-                cout << "m=: " << m << endl;
-                cout <<"coup:" << coup.Fin.x << coup.Fin.y << endl;
-            }*/
+            
             if (v > m)
 
                 coup = DP[i];
@@ -2162,7 +2137,6 @@ int finDePartie() {
     return -1;
 }
 void affichage_ecran_accueil() {
-    //G2D::DrawRectangle(V2(0, 0), V2(640, 640), Color::Green, true);
 
     _Titre BG = _Titre(2);
     BG.IdTex = G2D::InitTextureFromString(BG.Size, BG.Texture);
@@ -2219,9 +2193,9 @@ void affichage_init_partie() {
     G2D::DrawRectWithTexture(roi.IdTex, V2(250, 280), roi.Size);
 
 
-    G2D::DrawStringFontMono(V2(10, 150), "CONSEIL : Pensez à developper vos pieces ", 16, 3,
+    G2D::DrawStringFontMono(V2(10, 150), "CONSEIL : N'hesitez pas à utiliser le rocque pour mettre ", 16, 3,
         Color::White);
-    G2D::DrawStringFontMono(V2(60, 130), "afin de pouvoir gagner", 16, 3, Color::White);
+    G2D::DrawStringFontMono(V2(60, 130), "a l'abri votre roi et developper une de vos pieces", 16, 3, Color::White);
 
     G2D::DrawStringFontMono(V2(220, 80), "Appuyez sur ENTER", 16, 3, Color::White);
 
@@ -2300,12 +2274,10 @@ void affichage_ecran_victoire_blanc()
     Win.Size = Win.Size * Win.Zoom;
     G2D::DrawRectWithTexture(Win.IdTex, V2(30, 300), Win.Size);
 
-    //G2D::DrawStringFontMono(V2(70, 500), "You WIN !!!!", 80, 10, Color::Green);
     G2D::DrawStringFontMono(V2(50, 200),
         "Appuyez sur ENTER pour faire une autre partie.", 16,
         3, Color::Black);
 }
-//end
 
 void affichage_ecran_victoire_noir() {
     _Titre Win = _Titre(5);
@@ -2332,7 +2304,6 @@ void affichage_ecran_pat() {
         "Appuyez sur ENTER pour faire une autre partie.", 16,
         3, Color::White);
 }
-//end
 void render() {
     G2D::ClearScreen(Color::Black);
     if (G.ecran == ECRAN_ACCUEIL) {
@@ -2366,7 +2337,6 @@ int gestion_ecran_accueil() {
     }
     return 0;
 }
-//end
 int gestion_ecran_options() {
     // blanc contre ia
     if (G2D::IsKeyPressed(Key::A)) {
@@ -2386,7 +2356,6 @@ int gestion_ecran_options() {
     }
     return 1;
 }
-//end
 
 int InitPartie() {
     if (G2D::IsKeyPressed(Key::ENTER)) {
@@ -2404,11 +2373,9 @@ int InitPartie() {
     }
     return 2;
 }
-//end
 int gestion_ecran_jeu() {
     //l'integralité des fonctionnements gameplay / imput
 
-    //cout << DeplacementPiece(_Pion(V2(6, 1), 1, 0), V2(6, 3)) << endl;
     if (G.TimerEnd > 0 && G.TimerEnd < 80)
     {
         cout << G.TimerEnd<<endl;
@@ -2598,7 +2565,7 @@ void AssetsInit() {
     G.IdTexSol =
         G2D::InitTextureFromString(G.Size, G.Plateau.textureSol);
     G.Size =
-        G.Size * 10; // on peut zoomer la taille du sprite
+        G.Size * 10; 
     
 }
 int main(int argc, char* argv[]) {
