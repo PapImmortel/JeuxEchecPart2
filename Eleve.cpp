@@ -1932,13 +1932,8 @@ void changeBack(deplacement D)
         {
             if (piece.estVivant)
             {
-                if (G.Plateau.getPositionPiece(piece.pos))
-                {
-                    G.Plateau.setPositionPiece(piece.pos.x, piece.pos.y, to_string(D.couleur));
-                }
+                
                 piece.pos = D.start;
-                G.Plateau.setPositionPiece(piece.pos.x, piece.pos.y, to_string(piece.getCouleur()));
-
             }
 
         }
@@ -1948,7 +1943,6 @@ void changeBack(deplacement D)
             {
                 piece.setEstVivant(!piece.getEstVivant());
                 piece.TimeDead = -1;
-                G.Plateau.setPositionPiece(piece.pos.x, piece.pos.y, to_string(piece.couleur));
 
             }
             else if(piece.TimeDead >0)
