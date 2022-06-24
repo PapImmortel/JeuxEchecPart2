@@ -2324,7 +2324,7 @@ void render() {
     G2D::Show();
 }
 
-
+ 
 int gestion_ecran_accueil() {
     if (G2D::IsKeyPressed(Key::ENTER)) {
         return 1;

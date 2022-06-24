@@ -160,7 +160,7 @@ void G2D::DrawPolygon(vector<V2>& PointList, Color c, bool fill)
 		glVertex2f(P.x, P.y);
 	glEnd();
 }
-
+ 
 /////////////////////////////////////////////////////////////
 //
 //	    Font
